@@ -19,8 +19,10 @@ namespace WorkflowCore.Services.BackgroundTasks
         protected override QueueType Queue => QueueType.Index;
         protected override bool EnableSecondPasses => true;
 
-        public IndexConsumer(IPooledObjectPolicy<IPersistenceProvider> persistencePoolPolicy, IQueueProvider queueProvider, ILoggerFactory loggerFactory, ISearchIndex searchIndex, WorkflowOptions options)
-            : base(queueProvider, loggerFactory, options)
+        public IndexConsumer(
+            IWorkflowRegistry registry, IPersistenceProvider persistenceProvider,
+            IPooledObjectPolicy<IPersistenceProvider> persistencePoolPolicy, IQueueProvider queueProvider, ILoggerFactory loggerFactory, ISearchIndex searchIndex, WorkflowOptions options)
+            : base(registry, queueProvider, loggerFactory, options, persistenceProvider)
         {
             _persistenceStorePool = new DefaultObjectPool<IPersistenceProvider>(persistencePoolPolicy);
             _searchIndex = searchIndex;

@@ -5,6 +5,7 @@
     {
         string Id { get; }
         int Version { get; }
+        bool IsAsync { get; }
         void Build(IWorkflowBuilder<TData> builder);
     }
 

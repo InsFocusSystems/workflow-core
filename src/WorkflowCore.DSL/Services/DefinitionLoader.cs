@@ -47,7 +47,8 @@ namespace WorkflowCore.Services.DefinitionStorage
                 DefaultErrorBehavior = source.DefaultErrorBehavior,
                 DefaultErrorRetryInterval = source.DefaultErrorRetryInterval,
                 Description = source.Description,
-                DataType = dataType
+                DataType = dataType,
+                RunAsync = source.IsAsync
             };
 
             return result;

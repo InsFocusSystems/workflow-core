@@ -22,6 +22,7 @@ namespace WorkflowCore.Models
 
         public TimeSpan? DefaultErrorRetryInterval { get; set; }
 
+        public bool RunAsync { get; set; }
     }
 
     public enum WorkflowErrorHandling

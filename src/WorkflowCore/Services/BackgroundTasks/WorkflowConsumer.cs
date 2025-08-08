@@ -19,8 +19,9 @@ namespace WorkflowCore.Services.BackgroundTasks
         protected override int MaxConcurrentItems => Options.MaxConcurrentWorkflows;
         protected override QueueType Queue => QueueType.Workflow;
 
-        public WorkflowConsumer(IPersistenceProvider persistenceProvider, IQueueProvider queueProvider, ILoggerFactory loggerFactory, IServiceProvider serviceProvider, IWorkflowRegistry registry, IDistributedLockProvider lockProvider, IWorkflowExecutor executor, IDateTimeProvider datetimeProvider, IGreyList greylist, WorkflowOptions options)
-            : base(queueProvider, loggerFactory, options)
+        public WorkflowConsumer(
+            IPersistenceProvider persistenceProvider, IQueueProvider queueProvider, ILoggerFactory loggerFactory, IServiceProvider serviceProvider, IWorkflowRegistry registry, IDistributedLockProvider lockProvider, IWorkflowExecutor executor, IDateTimeProvider datetimeProvider, IGreyList greylist, WorkflowOptions options)
+            : base(registry, queueProvider, loggerFactory, options, persistenceProvider)
         {
             _persistenceStore = persistenceProvider;
             _greylist = greylist;

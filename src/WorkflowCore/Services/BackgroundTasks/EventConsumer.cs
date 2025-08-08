@@ -20,8 +20,10 @@ namespace WorkflowCore.Services.BackgroundTasks
         protected override int MaxConcurrentItems => 2;
         protected override QueueType Queue => QueueType.Event;
 
-        public EventConsumer(IWorkflowRepository workflowRepository, ISubscriptionRepository subscriptionRepository, IEventRepository eventRepository, IQueueProvider queueProvider, ILoggerFactory loggerFactory, IServiceProvider serviceProvider, IWorkflowRegistry registry, IDistributedLockProvider lockProvider, WorkflowOptions options, IDateTimeProvider datetimeProvider, IGreyList greylist)
-            : base(queueProvider, loggerFactory, options)
+        public EventConsumer(
+            IPersistenceProvider persistenceProvider,
+            IWorkflowRepository workflowRepository, ISubscriptionRepository subscriptionRepository, IEventRepository eventRepository, IQueueProvider queueProvider, ILoggerFactory loggerFactory, IServiceProvider serviceProvider, IWorkflowRegistry registry, IDistributedLockProvider lockProvider, WorkflowOptions options, IDateTimeProvider datetimeProvider, IGreyList greylist)
+            : base(registry, queueProvider, loggerFactory, options, persistenceProvider)
         {
             _workflowRepository = workflowRepository;
             _greylist = greylist;

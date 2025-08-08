@@ -12,5 +12,6 @@ namespace WorkflowCore.Models.DefinitionStorage.v1
         public TimeSpan? DefaultErrorRetryInterval { get; set; }
 
         public List<StepSourceV1> Steps { get; set; } = new List<StepSourceV1>();
+        public bool IsAsync { get; set; }
     }
 }

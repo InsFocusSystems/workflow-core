@@ -59,6 +59,7 @@ namespace WorkflowCore.Services
             var builder = _serviceProvider.GetService<IWorkflowBuilder>().UseData<object>();
             workflow.Build(builder);
             var def = builder.Build(workflow.Id, workflow.Version);
+            def.RunAsync = workflow.IsAsync;
             RegisterWorkflow(def);
         }
 
@@ -89,6 +90,7 @@ namespace WorkflowCore.Services
             var builder = _serviceProvider.GetService<IWorkflowBuilder>().UseData<TData>();
             workflow.Build(builder);
             var def = builder.Build(workflow.Id, workflow.Version);
+            def.RunAsync = workflow.IsAsync;
             RegisterWorkflow(def);
         }
 

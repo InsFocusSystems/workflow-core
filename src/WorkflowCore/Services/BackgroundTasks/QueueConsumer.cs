@@ -25,9 +25,14 @@ namespace WorkflowCore.Services.BackgroundTasks
         private CancellationTokenSource _cancellationTokenSource;
         private Dictionary<string, EventWaitHandle> _activeTasks;
         private ConcurrentHashSet<string> _secondPasses;
-
-        protected QueueConsumer(IQueueProvider queueProvider, ILoggerFactory loggerFactory, WorkflowOptions options)
+        private readonly IPersistenceProvider _persistenceStore;
+        private readonly IWorkflowRegistry _registry;
+        
+        protected QueueConsumer(IWorkflowRegistry registry, IQueueProvider queueProvider, ILoggerFactory loggerFactory, WorkflowOptions options,
+            IPersistenceProvider persistenceProvider)
         {
+            _registry = registry;
+            _persistenceStore = persistenceProvider;
             QueueProvider = queueProvider;
             Options = options;
             Logger = loggerFactory.CreateLogger(GetType());
@@ -114,7 +119,25 @@ namespace WorkflowCore.Services.BackgroundTasks
                     {
                         _activeTasks.Add(item, waitHandle);
                     }
-                    var task = ExecuteItem(item, waitHandle, activity);
+                    
+                    if (Queue == QueueType.Workflow)
+                    {
+                        var wf = await _persistenceStore.GetWorkflowInstance(item, _cancellationTokenSource.Token);
+                        var def = _registry.GetDefinition(wf.WorkflowDefinitionId, wf.Version);
+                       
+                        if (def.RunAsync)
+                        {
+                            Task.Run(() => ExecuteItem(item, waitHandle, activity));
+                        }
+                        else
+                        {
+                            ExecuteItem(item, waitHandle, activity);   
+                        }
+                    }
+                    else
+                    {
+                        var task = ExecuteItem(item, waitHandle, activity);   
+                    }
                 }
                 catch (OperationCanceledException)
                 {
