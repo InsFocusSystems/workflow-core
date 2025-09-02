@@ -122,17 +122,18 @@ namespace WorkflowCore.Services.BackgroundTasks
                     
                     if (Queue == QueueType.Workflow)
                     {
-                        var wf = await _persistenceStore.GetWorkflowInstance(item, _cancellationTokenSource.Token);
-                        var def = _registry.GetDefinition(wf.WorkflowDefinitionId, wf.Version);
-                       
-                        if (def.RunAsync)
-                        {
-                            Task.Run(() => ExecuteItem(item, waitHandle, activity));
-                        }
-                        else
-                        {
-                            ExecuteItem(item, waitHandle, activity);   
-                        }
+                        //var wf = await _persistenceStore.GetWorkflowInstance(item, _cancellationTokenSource.Token);
+                        //var def = _registry.GetDefinition(wf.WorkflowDefinitionId, wf.Version);
+
+                        //if (def.RunAsync)
+                        //{
+                        //    Task.Run(() => ExecuteItem(item, waitHandle, activity));
+                        //}
+                        //else
+                        //{
+                        //    var task = ExecuteItem(item, waitHandle, activity);   
+                        //}
+                        Task.Run(() => ExecuteItem(item, waitHandle, activity));
                     }
                     else
                     {
