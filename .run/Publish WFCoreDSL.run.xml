@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish WFCoreDSL" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$PROJECT_DIR$/../Development/Workflows/Extrenal" target_framework="netstandard2.0" uuid_high="2358066534620547156" uuid_low="-8202001489157979159" />
+    <method v="2" />
+  </configuration>
+</component>
